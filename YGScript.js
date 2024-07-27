@@ -23,6 +23,21 @@
         // Check if scores are in 3-digit format (sum to 1000) or 5-digit format (sum to 100000)
         const totalScore = scores.reduce((sum, score) => sum + score, 0);
         const areScoresValid = totalScore === 1000 || totalScore === 100000;
+        const areScoresLegacyValid = totalScore === 0;
+        
+        if (areScoresLegacyValid) {
+        // Retain the score strings if the scores are legacy-formatted and valid(sum 0).
+            alert("+/- 점수형식은 사용이 권장되지 않습니다.\n"
+            + "다음부터는 원점수만을 입력해주십시오.\n"
+            + "(예시)\n"
+            + "작사1  330\n"
+            + "작사2  240\n"
+            + "작사3  240\n"
+            + "작사4  190\n"
+            + "확인 버튼을 누르시면 등록이 진행됩니다.\n"
+            + "치토 올림");
+            return true;
+        }
 
         if (areScoresValid) {
             // Convert 3-digit scores to 5-digit if necessary
