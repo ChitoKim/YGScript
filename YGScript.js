@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Override Button Click and Access Text Boxes
 // @namespace    http://tampermonkey.net/
-// @version      2024-07-21
+// @version      2025-07-13
 // @description  Override the onClick event of a specific button and access text boxes
-// @author       You
+// @author       ChitoKim
 // @match        http://ygmajang.interdaim.com/insertgameinput.php?*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=interdaim.com
 // @grant        none
+// @require      https://cdn.jsdelivr.net/npm/mathjs@11.11.1/lib/browser/math.js
 // ==/UserScript==
 
 (function() {
@@ -16,7 +17,14 @@
     function verifyScore() {
         // Access the text boxes with name="score[]"
         const scoreInputs = document.querySelectorAll('input[name="score[]"]');
-        const scores = Array.from(scoreInputs).map(input => parseInt(input.value, 10));
+        const scores = Array.from(scoreInputs).map(input => {
+            try {
+                return math.evaluate(input.value);
+            } catch (err) {
+                console.error(`Invalid math expression: ${input.value}`, err);
+                return NaN;
+            }
+        });
 
         console.log("Original Scores:", scores);
 
